@@ -1,7 +1,7 @@
-FROM nprod-harbor.mohre.gov.ae/lts-alpine/lts-alpine:3.19
+FROM nprod-harbor..gov.ae/lts-alpine/lts-alpine:3.19
 
 # Create a non-root user and group
-RUN addgroup -S mohregroup && adduser -S mohreuser -G mohregroup
+RUN addgroup -S group && adduser -S user -G group
 
 # Create app directory and set permissions
 RUN mkdir -p /app
@@ -53,14 +53,14 @@ RUN echo "#!/bin/sh" > start-sdpslalistener.sh && \
     chmod +x start-sdpslalistener.sh
 
 # Change ownership of the application files to the non-root user
-RUN chown -R mohreuser:mohregroup \
+RUN chown -R user:group \
     start-actions.sh start-sahel.sh start-admin.sh start-auth.sh \
     start-relay.sh start-audit.sh start-elastic.sh start-jobs.sh start-notifications.sh start-sdpslalistener.sh \
     sdp-actions-api sdp-sahel-api sdp-admin-api auth_service \
     sdp-relay-worker sdp-audit-processor sdp-elastic-sync sdp-background-jobs sdp-notifications-worker sdp-sla-listener || true
 
 # Switch to the non-root user
-USER mohreuser
+USER user
 
 EXPOSE 8443
 # CMD ["/app/start.sh"]
